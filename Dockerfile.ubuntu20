@@ -1,0 +1,17 @@
+FROM ubuntu:20.04
+
+ARG DOCKERIZE_VERSION=0.6.1
+ENV TEMPLATES_DIR=/srv/templates
+
+RUN apt-get update && \
+    apt-get install -y curl ssmtp && \
+    apt-get clean && \
+    rm -rf /var/cache/apt/* /var/lib/apt/lists/* && \
+    curl -sL "https://github.com/jwilder/dockerize/releases/download/v${DOCKERIZE_VERSION}/dockerize-linux-amd64-v${DOCKERIZE_VERSION}.tar.gz" | \
+        tar -zx -C /usr/local/bin/ && \
+    # for templates
+    mkdir -p ${TEMPLATES_DIR}
+
+ENV DEBUG=false
+
+COPY *.tmpl ${TEMPLATES_DIR}/
